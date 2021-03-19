@@ -25,7 +25,7 @@ SECRET_KEY = 'izh37g8zr%j4iyc7=^^wj7uidfr=qz^=4v4v(yy0kvf1+75apy'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://themenswall.herokuapp.com/']
 
 
 # Application definition
