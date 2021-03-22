@@ -27,7 +27,7 @@
                       <a href="{% url 'user-posts' request.user.username %}" title="">My post</a>
                     </li>
                     <li>
-                      <i class="ti-files"></i>
+                      <i class="ti-plus"></i>
                       <a href="{% url 'post-create' %}" title="">Add post</a>
                     </li>
                    
@@ -47,7 +47,6 @@
             <!-- center middle  -->
             <div class="col-lg-6">
               
-              <div class="loadMore">
                 {% for post in posts %}
                 <div class="central-meta item">
                 <div class="user-post">
@@ -146,7 +145,7 @@
                 </div>
               </div>
               {% endfor %}
-              </div>
+              
             </div><!-- centerl meta -->
             <!-- sidebar right -->
             <div class="col-lg-3">

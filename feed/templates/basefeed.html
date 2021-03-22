@@ -34,13 +34,10 @@
                         <button data-ripple type="submit"><i class="ti-search"></i></button>
                     </form>
                 </div>
-                <ul class="setting-area">
-                    <li><span>Welcome,</span></li>
-                    <li><span>{{request.user.username}}</span></li>
-                    
-                </ul>
+                
                 <div class="user-img">
-                    <img src="{{ u.profile.image.url }}" alt="" style="width: 50px;";>
+                    <span>Welcome,</span>
+                    <span>{{request.user.username}}</span>
                     <span class="status f-online"></span>
                 </div>
                 

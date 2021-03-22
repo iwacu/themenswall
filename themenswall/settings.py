@@ -122,19 +122,44 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'live-static','static-root')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'live-static','static-root')
+# STATIC_URL = '/static/'
+
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
+
+
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'live-static', 'media-root')
+# MEDIA_URL = '/media/'
+
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# LOGIN_REDIRECT_URL = 'home'
+# LOGIN_URL = 'login'
+
+
+STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR,'static')
+# ]
+
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR),"static_cdn","static_root")
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),"static_cdn","media_root")
+
+LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'live-static', 'media-root')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
-

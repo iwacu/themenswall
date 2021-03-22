@@ -28,11 +28,7 @@ class PostListView(LoginRequiredMixin,ListView):
 			p = Profile.objects.filter(user = self.request.user).first()
 			u = p.user
 			liked = [i for i in Post.objects.all() if Like.objects.filter(user = self.request.user, post=i)]
-			context = {
-				'u':u,
-				'posts':liked
-				
-			}
+			context['liked_post'] = liked
 		return context
 
 
@@ -49,11 +45,7 @@ class UserPostListView(LoginRequiredMixin, ListView):
 		u = p.user
 		user = get_object_or_404(User, username=self.kwargs.get('username'))
 		liked = [i for i in Post.objects.filter(user_name=user) if Like.objects.filter(user = self.request.user, post=i)]
-		context = {
-				'u':u,
-				'posts':liked
-				
-			}
+		context['liked_post'] = liked
 		return context
 
 	
@@ -84,8 +76,6 @@ def post_detail(request, pk):
 @login_required
 def create_post(request):
 	user = request.user
-	p = Profile.objects.filter(user = request.user).first()
-	u = p.user
 	if request.method == "POST":
 		form = NewPostForm(request.POST, request.FILES)
 		if form.is_valid():
@@ -96,7 +86,7 @@ def create_post(request):
 			return redirect('home')
 	else:
 		form = NewPostForm()
-	return render(request, 'feed/create_post.html', {'u':u,'form':form})
+	return render(request, 'feed/create_post.html', {'form':form})
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Post
