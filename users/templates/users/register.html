@@ -1,36 +1,50 @@
-{% extends "feed/layout.html" %} {% load crispy_forms_tags %} {% load static %}
+{% extends "baseLR.html" %}
 {% block content %}
-<br />
-<div class="container">
-  <div class="row">
-    <div class="col-sm-9 col-md-9 col-lg-7 mx-auto">
-      <div class="card card-signin my-5">
-        <div class="card-body">
-          <h5 class="card-title text-center"><b>Register</b></h5>
-          <form class="form-signin" method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-              <br />
-              {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-              <button
-                class="btn btn-lg btn-primary btn-block text-uppercase"
-                type="submit"
-              >
-                Sign Up</button
-              ><br /><br />
+
+      <form method="POST">
+        {% csrf_token %} 
+        <section class ="copy">
+            <h2>Sign Up</h2>
+            <div class="login-container">
+                <p>Already have an account? <a href="{% url 'login' %}">
+                    <strong>Log In</strong>
+                </a></p>
             </div>
-            <small
-              ><p class="text-center">
-                Already Registered!
-                <a href="{% url 'login' %}"><b>Login Now!</b></a>
-              </p></small
-            >
-          </form>
+        </section>
+        <div class="input-container name">  
+            <label for="fname">Full Name</label>
+            {{form.username}}
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock content %}
+        <div class="input-container email">
+            <label for="email">Email</label>
+            {{form.email}}
+        </div>
+        <div class="input-container password">
+            <label for="password">Password</label>
+            {{form.password1}}
+            <i class="fa fa-eye-slash"></i>
+        </div>
+        <div class="input-container password">
+            <label for="password">Confirm Password</label>
+            {{form.password2}}
+            <i class="fa fa-eye-slash"></i>
+        </div>
+        
+        {{form.errors}}
+        <button class="signup-btn" type="submit">Sign Up</button>
+        <section class="copy legal">
+            <p><span class="small">By continuing, you agree to accept our
+                <br> <a href="#"> Privacy Policy</a> &amp; <a href="#">Terms of Service</a>.
+            </span></p>
+        </section>
+    </form>
+    {% endblock content %}
+
+
+
+
+
+
+
+
+

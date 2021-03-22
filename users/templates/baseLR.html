@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The men's wall</title>
+<link rel="icon" href="{% static 'images/fav.png' %}" type="image/png" sizes="16x16"> 
+<link rel="stylesheet" type="text/css" id="applicationStylesheet" href="{% static 'css/loginregister.css' %}"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+<body>
+ <div class="split-screen">
+    <div class="left" >
+        <section class ="copy">
+            
+            <h1>Welcome</h1>
+            <p>Share your ideas over 1Million of People on this platform</p>
+        </section>
+    </div>
+     <div class="right">
+     {% block content%}
+     {% endblock %}
+    </div>
+    </div>
+
+</body>
+</html>
+
+
+

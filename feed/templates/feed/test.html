@@ -1,0 +1,651 @@
+{% extends "feed/layout.html" %} {% load static %} {% load crispy_forms_tags %}
+{% block searchform %}
+<form
+  class="form-inline my-2 my-lg-0 ml-5"
+  action="{% url 'search_posts' %}"
+  method="get"
+>
+  <input name="p" type="text" placeholder="Search posts by tags.." />
+  <button class="btn btn-success my-2 my-sm-0 ml-4" type="submit">
+    Search
+  </button>
+</form>
+{% endblock searchform %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <a href="{{ post.user_name.profile.get_absolute_url }}"
+            ><img
+              src="{{ post.user_name.profile.image.url }}"
+              class="rounded-circle"
+              width="30"
+              height="30"
+              alt=""
+          /></a>
+          <a
+            class="text-dark"
+            href="{{ post.user_name.profile.get_absolute_url }}"
+            ><b>{{ post.user_name }}</b></a
+          >
+          <br /><small class="text-muted"
+            >Posted on {{ post.date_posted }}</small
+          >
+          <br /><br />
+          <p class="card-text text-dark">{{ post.description }}</p>
+        </div>
+        <a href="{{ post.pic.url }}"
+          ><img class="card-img-top" src="{{ post.pic.url }}" alt=""
+        /></a>
+        {% if post.tags %}
+        <br />
+        <p class="text-danger ml-3">
+          <b>Tags: <i>{{ post.tags }}</i></b>
+        </p>
+        {% endif %}
+        <div class="card-footer">
+          <button class="btn btn-white mr-3 like" id="{{ post.id }}">
+            {% if is_liked %}
+            <a
+              href="{% url 'post-like' %}"
+              style="color: red"
+              id="likebtn{{ post.id }}"
+            >
+              Unlike | {{post.likes.count}}</a
+            >
+            {% else %}
+            <a
+              href="{% url 'post-like' %}"
+              style="color: green"
+              id="likebtn{{ post.id }}"
+            >
+              Like | {{post.likes.count}}</a
+            >
+            {% endif %}
+          </button>
+
+          {% if post.user_name == user %}
+          <a
+            class="btn btn-outline-info mr-3"
+            href="{% url 'post-update' post.id %}"
+            >Update</a
+          >
+          <a
+            class="btn btn-outline-danger"
+            href="{% url 'post-delete' post.id %}"
+            >Delete</a
+          >
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <h4>Comments</h4>
+  <div class="row">
+        <div class="col-md-8">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <form class="form-signin" method="POST" id="post-form">
+                        {% csrf_token %}
+                        <fieldset class="form-group">
+                        <br />
+                        {{ form|crispy }}
+                        </fieldset>
+                        <div class="form-group">
+                        <button
+                            class="btn btn-lg btn-primary btn-block text-uppercase"
+                            type="submit"
+                        >
+                            Comment</button
+                        ><br />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {% if post.details.all %}
+      <div class="card card-signin my-5">
+        {% for detail in post.details.all %}
+        <div class="card-body">
+          <a href="{{ detail.username.profile.get_absolute_url }}">
+            <img
+              src="{{ detail.username.profile.image.url }}"
+              class="rounded-circle"
+              width="30"
+              height="30"
+              alt=""
+            />
+          </a>
+          <a
+            class="text-dark"
+            href="{{ detail.username.profile.get_absolute_url }}"
+            ><b>{{ detail.username }}</b></a
+          >
+          <br /><small>{{ detail.comment_date }}</small><br /><br />
+          <p class="card-text text-dark">{{ detail.comment }}</p>
+        </div>
+        <hr class="my-1" />
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>No comments to show!</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock content %} {% block jsfiles %}
+<script>
+  $(".like").click(function (e) {
+    var id = this.id;
+    var href = $(".like").find("a").attr("href");
+    e.preventDefault();
+
+    $.ajax({
+      url: href,
+      data: {
+        likeId: id,
+      },
+      success: function (response) {
+        if (response.liked) {
+          $("#likebtn" + id).html("Unlike | {{post.likes.count}}");
+          $("#likebtn" + id).css("color", "red");
+        } else {
+          $("#likebtn" + id).html("Like | {{post.likes.count}}");
+          $("#likebtn" + id).css("color", "green");
+        }
+      },
+    });
+  });
+</script>
+
+{% endblock jsfiles %} 
+ 
+<!-- friend_list -->
+{% extends "feed/layout.html" %} {% load static %} {% block searchform %}
+<form
+  class="form-inline my-2 my-lg-0 ml-5"
+  action="{% url 'search_users' %}"
+  method="get"
+>
+  <input name="q" type="text" placeholder="Search users.." />
+  <button class="btn btn-success my-2 my-sm-0 ml-4" type="submit">
+    Search
+  </button>
+</form>
+{% endblock searchform %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      {% if friends %}
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          {% for user_p in friends %}
+          <a href="{{ user_p.get_absolute_url }}"
+            ><img
+              src="{{ user_p.image.url }}"
+              class="rounded mr-2"
+              width="40"
+              height="40"
+              alt=""
+          /></a>
+          <a class="text-dark" href="{{ user_p.get_absolute_url }}"
+            ><b>{{ user_p }}</b></a
+          >
+          <small
+            ><a
+              class="btn btn-danger float-right"
+              href="{% url 'delete_friend' user_p.id %}"
+              >UnFriend</a
+            ></small
+          >
+          <br /><br />
+          {% endfor %}
+        </div>
+      </div>
+      {% else %}
+      <h5>
+        <i
+          >You have no friends now! Make some new
+          <a href="{% url 'users_list' %}">friends here!</a></i
+        >
+      </h5>
+      {% endif %}
+    </div>
+    <div class="col-md-4">
+      <div class="card card-signin my-5">
+        <a href="{{ request.user.profile.get_absolute_url }}"
+          ><img
+            class="card-img-top"
+            src="{{ request.user.profile.image.url }}"
+            alt=""
+        /></a>
+        <div class="card-body">
+          <h5 class="card-title text-center">{{ request.user }}</h5>
+          <h6 class="text-center">
+            {{ request.user.profile.friends.count }}
+            <p class="text-muted">Friends</p>
+          </h6>
+          <p class="card-text text-center">{{ request.user.profile.bio }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock content %}
+</div>
+
+<!-- end friend list -->
+
+<!-- create post -->
+
+{% extends "feed/layout.html" %} {% load static %} {% load crispy_forms_tags %}
+{% block searchform %}
+<form
+  class="form-inline my-2 my-lg-0 ml-5"
+  action="{% url 'search_posts' %}"
+  method="get"
+>
+  <input name="p" type="text" placeholder="Search posts.." />
+  <button class="btn btn-success my-2 my-sm-0 ml-4" type="submit">
+    Search
+  </button>
+</form>
+{% endblock searchform %} {% block content %}
+<br /><br />
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <h5 class="card-title text-center"><b>Post</b></h5>
+          <form class="form-signin" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+              <br />
+              {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+              <button
+                class="btn btn-lg btn-primary btn-block text-uppercase"
+                type="submit"
+              >
+                Post</button
+              ><br />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %} {% block jsfiles %}{% endblock jsfiles %}
+
+
+
+<!-- profile -->
+{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {% extends "feed/layout.html" %} {% load static %} {% block searchform %}
+    <form
+      class="form-inline my-2 my-lg-0 ml-5"
+      action="{% url 'search_users' %}"
+      method="get"
+    >
+      <input name="q" type="text" placeholder="Search users.." />
+      <button class="btn btn-success my-2 my-sm-0 ml-4" type="submit">
+        Search
+      </button>
+    </form>
+    {% endblock searchform %} {% block content %}
+    <br /><br />
+    <div class="main-content">
+      <div class="container mt-7">
+        <div class="row">
+          <div class="col-xl-8 m-auto order-xl-2 mb-5 mb-xl-0">
+            <div class="card card-profile shadow">
+              <div class="row justify-content-center">
+                <div class="col-lg-3 order-lg-2">
+                  <div class="card-profile-image">
+                    <a href="{{ u.profile.image.url }}">
+                      <img
+                        src="{{ u.profile.image.url }}"
+                        class="rounded-circle"
+                        width="160px"
+                        height="160px"
+                      />
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4"
+              ></div>
+              <div class="card-body pt-0 pt-md-4">
+                <div class="row">
+                  <div class="col">
+                    <div
+                      class="card-profile-stats d-flex justify-content-center mt-md-5"
+                    >
+                      <div>
+                        <span class="heading">{{ u.profile.friends.count }}</span>
+                        {% if request.user == u %}
+                        <span class="description"
+                          ><a href="{% url 'friend_list' %}">Friends</a></span
+                        >
+                        {% else %}
+                        <span class="description">Friends</span>
+                        {% endif %}
+                        <span class="heading">{{ post_count }}</span>
+                        <span class="description"
+                          ><a href="{% url 'user-posts' u.username %}"
+                            >Posts</a
+                          ></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <h3>{{ u }}</h3>
+                  <p>{{ u.profile.bio }}</p>
+                  <hr class="my-2" />
+                  {% if request.user == u %}
+                  <a class="btn btn-info" href="{% url 'edit_profile' %}"
+                    >Edit Profile</a
+                  >
+                  {% else %} {% if button_status == 'not_friend' %}
+                  <small
+                    ><a
+                      class="btn btn-primary"
+                      href="/users/friend-request/send/{{ u.id }}"
+                      >Add Friend</a
+                    ></small
+                  >
+                  {% elif button_status == 'friend_request_sent' %}
+                  <small
+                    ><a
+                      class="btn btn-warning"
+                      href="/users/friend-request/cancel/{{ u.id }}"
+                      >Cancel Request</a
+                    ></small
+                  >
+                  {% elif button_status == 'friend_request_received' %}
+                  <small
+                    ><a
+                      class="btn btn-success mr-2"
+                      href="/users/friend-request/accept/{{ u.id }}"
+                      >Accept Request</a
+                    ></small
+                  >
+                  <small
+                    ><a
+                      class="btn btn-danger"
+                      href="/users/friend-request/delete/{{ u.id }}"
+                      >Reject Request</a
+                    ></small
+                  >
+                  {% else %}
+                  <small
+                    ><a
+                      class="btn btn-danger"
+                      href="/users/friend/delete/{{ u.id }}"
+                      >UnFriend</a
+                    ></small
+                  >
+                  {% endif %} {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        {% if request.user == u %}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card card-signin my-5">
+              <div class="card-body">
+                <h2>Friend Requests Sent ({{ sent_friend_requests.count }})</h2>
+                <hr class="my-2" />
+                {% if not sent_friend_requests %}
+                <h5><i>No sent requests!</i></h5>
+                {% else %} {% for s_request in sent_friend_requests %}
+                <a href="{{ s_request.to_user.profile.get_absolute_url }}"
+                  ><img
+                    src="{{ s_request.to_user.profile.image.url }}"
+                    class="rounded mr-2"
+                    width="40"
+                    height="40"
+                    alt=""
+                /></a>
+                <a href="{{ s_request.to_user.profile.get_absolute_url }}"
+                  ><b>{{ s_request.to_user.username }}</b></a
+                >
+                <small class="float-right">
+                  <a
+                    class="btn btn-warning mr-2"
+                    href="{% url 'cancel_friend_request' s_request.to_user.id %}"
+                    >Cancel</a
+                  >
+                </small>
+                <br /><br />
+                {% endfor %} {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card card-signin my-5">
+              <div class="card-body">
+                <h2>Friend Requests Recieved ({{ rec_friend_requests.count }})</h2>
+                <hr class="my-2" />
+                {% if not rec_friend_requests %}
+                <h5><i>No recieved requests!</i></h5>
+                {% else %} {% for r_request in rec_friend_requests %}
+                <a href="{{ r_request.from_user.profile.get_absolute_url }}"
+                  ><img
+                    src="{{ r_request.from_user.profile.image.url }}"
+                    class="rounded mr-2"
+                    width="40"
+                    height="40"
+                    alt=""
+                /></a>
+                <a
+                  class="mr-2 align-middle"
+                  href="{{ r_request.from_user.profile.get_absolute_url }}"
+                  ><b>{{ r_request.from_user.username }}</b>
+                </a>
+                <small class="float-right">
+                  <a
+                    class="btn btn-success mr-2"
+                    href="/users/friend-request/accept/{{ r_request.from_user.id }}"
+                    >Accept</a
+                  >
+                  <a
+                    class="btn btn-danger"
+                    href="/users/friend-request/delete/{{ r_request.from_user.id }}"
+                    >Reject</a
+                  >
+                </small>
+                <br /><br />
+                {% endfor %} {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    
+    {% endblock content %}
+    
+
+<!-- endporfile -->
+<!-- end creating post -->
+
+
+<!-- {% extends "basefeed.html" %} 
+{% load static %} 
+{% block searchform %}
+
+<form
+  class="form-inline my-2 my-lg-0 ml-5"
+  action="{% url 'search_posts' %}"
+  method="get"
+>
+  <input name="p" type="text" placeholder="Search willy.." />
+  <button class="btn btn-success my-2 my-sm-0 ml-4" type="submit">
+    Search
+  </button>
+</form>
+{% endblock searchform %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      {% for post in posts %}
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <a href="{{ post.user_name.profile.get_absolute_url }}"
+            ><img
+              src="{{ post.user_name.profile.image.url }}"
+              class="rounded-circle"
+              width="30"
+              height="30"
+              alt=""
+          /></a>
+          <a
+            class="text-dark"
+            href="{{ post.user_name.profile.get_absolute_url }}"
+            ><b>{{ post.user_name }}</b></a
+          >
+          <br /><small class="text-muted"
+            >Posted on {{ post.date_posted }}</small
+          >
+          <br /><br />
+          <p class="card-text text-dark">{{ post.description }}</p>
+        </div>
+        <a href="{% url 'post-detail' post.id %}"
+          ><img class="card-img-top" src="{{ post.pic.url }}" alt=""
+        /></a>
+        {% if post.tags %}
+        <br />
+        <p class="text-danger ml-3">
+          <b>Tags: <i>{{ post.tags }}</i></b>
+        </p>
+        {% endif %}
+        <div class="card-footer">
+          <button class="btn btn-white mr-3 like" id="{{ post.id }}">
+            {% if post in liked_post %}
+            <a
+              href="{% url 'post-like' %}"
+              style="color: red"
+              id="likebtn{{ post.id }}"
+            >
+              Unlike</a
+            >
+            | {{post.likes.count}} {% else %}
+            <a
+              href="{% url 'post-like' %}"
+              style="color: green"
+              id="likebtn{{ post.id }}"
+            >
+              Like</a
+            >
+            | {{post.likes.count}} {% endif %}
+          </button>
+          <a class="btn btn-outline-info" href="{% url 'post-detail' post.id %}"
+            >Comments | {{ post.details.count }}</a
+          >
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% if is_paginated %} 
+	{% if page_obj.has_previous %}
+		<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+		<a
+		  class="btn btn-outline-info mb-4"
+		  href="?page={{ page_obj.previous_page_number }}"
+		  >Previous</a
+		>
+	{% endif %}
+	{% for num in page_obj.paginator.page_range %}
+		{% if page_obj.number == num %}
+			<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+		{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+			<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+		{% endif %}
+	{% endfor %}
+
+	{% if page_obj.has_next %}
+		<a
+		  class="btn btn-outline-info mb-4"
+		  href="?page={{ page_obj.next_page_number }}"
+		  >Next</a
+		>
+		<a
+		  class="btn btn-outline-info mb-4"
+		  href="?page={{ page_obj.paginator.num_pages }}"
+		  >Last</a
+		>
+	{% endif %}
+
+{% endif %} 
+
+{% endblock content %} 
+
+{% block jsfiles %}
+<script>
+  $(".like").click(function (e) {
+    var id = this.id;
+    var href = $(".like").find("a").attr("href");
+    e.preventDefault();
+
+    $.ajax({
+      url: href,
+      data: {
+        likeId: id,
+      },
+      success: function (response) {
+        if (response.liked) {
+          $("#likebtn" + id).html("Unlike");
+          $("#likebtn" + id).css("color", "red");
+        } else {
+          $("#likebtn" + id).html("Like");
+          $("#likebtn" + id).css("color", "green");
+        }
+      },
+    });
+  });
+</script>
+{% endblock jsfiles %}
+ -->
