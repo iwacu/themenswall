@@ -34,7 +34,10 @@
                    
                     <li>
                       <i class="ti-bell"></i>
-                      <a href="#" title="">Notifications</a>
+                      <a href="{% url 'show-notifications' %}" title="">Notifications
+                        {% if count_notifications %}
+          <span class="badge">({{ count_notifications }})</span>
+        {% endif %} </a>
                     </li>
                     <li>
                       <i class="ti-power-off"></i>
@@ -54,7 +57,10 @@
                 <div class="user-post">
                   <div class="friend-info">
                     <figure>
-                      <img src="{{ post.user_name.profile.image.url }}" alt="">
+                      <img src="{{ post.user_name.profile.image.url }}" alt="" style="vertical-align: middle;
+                      width: 50px;
+                      height: 50px;
+                      border-radius: 50%;">
                     </figure>
                     <div class="friend-name">
                       <ins><a href="#" title="">{{ post.user_name }}</a></ins>
@@ -85,39 +91,7 @@
                               {% endif %}
                            
                           </li>
-                             <li class="social-media">
-                            <div class="menu">
-                              <div class="btn trigger"><i class="fa fa-share-alt"></i></div>
-                              <div class="rotater">
-                              <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-html5"></i></a></div>
-                              </div>
-                              <div class="rotater">
-                              <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-facebook"></i></a></div>
-                              </div>
-                              <div class="rotater">
-                              <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-google-plus"></i></a></div>
-                              </div>
-                              <div class="rotater">
-                              <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a></div>
-                              </div>
-                              <div class="rotater">
-                              <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-css3"></i></a></div>
-                              </div>
-                              <div class="rotater">
-                              <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-instagram"></i></a>
-                              </div>
-                              </div>
-                              <div class="rotater">
-                              <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-dribbble"></i></a>
-                              </div>
-                              </div>
-                              <div class="rotater">
-                              <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-pinterest"></i></a>
-                              </div>
-                              </div>
-
-                            </div>
-                          </li>
+                         
                         </ul>
                       </div>
                       <div class="description">
@@ -135,7 +109,7 @@
                   <div class="coment-area">
                     <ul class="we-comet">
                       <li>
-                        <a href="{% url 'post-detail' post.id %}" title="" class="showmore underline">View</a>
+                        <a href="{% url 'post-detail' post.id %}" title="" class="showmore underline">Comment</a>
                       </li>
                     </ul>
                   </div>

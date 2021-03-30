@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from . import views
-from .views import PostUpdateView, PostListView, UserPostListView
+from .views import PostUpdateView, PostListView, UserPostListView,	ShowNOtifications, DeleteNotification
 
 urlpatterns=[
 	path('', PostListView.as_view(), name='home'),
@@ -12,4 +12,7 @@ urlpatterns=[
 	path('post/<int:pk>/delete/', views.post_delete, name='post-delete'),
 	path('search_posts/', views.search_posts, name='search_posts'),
 	path('user_posts/<str:username>', UserPostListView.as_view(), name='user-posts'),
+	path('notifications/', ShowNOtifications, name='show-notifications'),
+	path('<noti_id>/delete', DeleteNotification, name='delete-notification'),
+
 ]

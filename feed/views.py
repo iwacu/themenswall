@@ -7,11 +7,12 @@ from django.contrib.auth.models import User
 from .forms import NewCommentForm, NewPostForm
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Post, Comments, Like
+from .models import Post, Comments, Like, Notification
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 import json
 from users.models import Profile
+from django.template import loader
 
 
 class PostListView(LoginRequiredMixin,ListView):
@@ -135,14 +136,48 @@ def like(request):
 	else:
 		liked = True
 		Like.objects.create(user=user, post=post)
+		# create_notification(request, user, 'liked', extra_id=post_id)
 	resp = {
         'liked':liked
     }
+	
+			
 	response = json.dumps(resp)
 	return HttpResponse(response, content_type = "application/json")
 
+@login_required
+def ShowNOtifications(request):
+	user = request.user
+	notifications = Notification.objects.filter(user=user).order_by('-date')
+	Notification.objects.filter(user=user, is_seen=False).update(is_seen=True)
+
+	template = loader.get_template('feed/notifications.html')
+
+	context = {
+		'notifications': notifications,
+	}
+
+	return HttpResponse(template.render(context, request))
+
+@login_required
+def DeleteNotification(request, noti_id):
+	user = request.user
+	Notification.objects.filter(id=noti_id, user=user).delete()
+	return redirect('show-notifications')
 
 
+def CountNotifications(request):
+	count_notifications = 0
+	if request.user.is_authenticated:
+		count_notifications = Notification.objects.filter(user=request.user, is_seen=False).count()
+
+	return {'count_notifications':count_notifications}
 
 
-
+def GetProfile(request):
+	you = ''
+	if request.user.is_authenticated:
+		p = request.user.profile
+		you = p.user
+	return {'profile':you}	
+	

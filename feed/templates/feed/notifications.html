@@ -1,6 +1,6 @@
 {% extends "basefeed.html" %} 
 {% load static %} 
-{% load crispy_forms_tags %}
+
 {% block content %}
 <section>
   <div class="gap gray-bg">
@@ -32,13 +32,7 @@
                       <a href="{% url 'post-create' %}" title="">Add post</a>
                     </li>
                    
-                    <li>
-                      <i class="ti-bell"></i>
-                      <a href="{% url 'show-notifications' %}" title="">Notifications
-                        {% if count_notifications %}
-          <span class="badge">({{ count_notifications }})</span>
-        {% endif %} </a>
-                    </li>
+                    
                     <li>
                       <i class="ti-power-off"></i>
                       <a href="{% url 'logout' %}" title="">Logout</a>
@@ -50,34 +44,51 @@
             </div><!-- sidebar -->
             <!-- center middle  -->
             <div class="col-lg-6">
-              <div class="central-meta">
-                <form class="form-signin" method="POST" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  <fieldset class="form-group" >
-                    <br />
-                   
-                    {{ form.description|as_crispy_field:"bootstrap" }}
-                   
-                    <br />
-                    <div style="background-color: white;border: 2px solid white;padding: 10px;border-radius: 25px;">
-                    {{form.pic|as_crispy_field}}
+                <div class="central-meta">
+                    <div class="editing-interest">
+                        <h5 class="f-title"><i class="ti-bell"></i>All Notifications </h5>
+                        <div class="notification-box">
+                            {% if not notifications %}
+                                No notifications yet!
+                            {% endif %}    
+                            <ul>
+                                {% for notification in notifications %}
+                                {% if notification.notification_type == 1 %}
+                                <li>
+                                    <figure><img src="{{ notification.sender.profile.image.url }}" alt=""></figure>
+                                    <div class="notifi-meta">
+                                        <!-- -->
+                                        <p>@{{ notification.sender.username}} liked your post</p>
+                                        <span>{{ notification.date }}</span>
+                                       
+                                        
+                                    </div>
+                                    <a href="{% url 'delete-notification' notification.id %}"><i class="del fa fa-close"></i></a>
+                                </li>
+                                {% endif %}
+                                {% if notification.notification_type == 2 %}
+                                <li>
+                                    <figure><img src="{{ notification.sender.profile.image.url }}" alt=""></figure>
+                                    <div class="notifi-meta">
+                                        <!-- -->
+                                        <p>@{{ notification.sender.username}} Commented your post</p>
+                                        <br>
+                                        Commented:
+                                        <p>{{notification.text_preview}}</p>
+                                        <span>{{ notification.date }}</span>
+                                       
+                                        
+                                    </div>
+                                    <a href="{% url 'delete-notification' notification.id %}"><i class="del fa fa-close"></i></a>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
-                    <br />
-                    {{form.tags|as_crispy_field}}
-                  </fieldset>
-                 
-                  <div class="form-group">
-                    <button
-                      class="btn btn-lg btn-primary btn-block text-uppercase"
-                      type="submit"
-                    >
-                      Post</button><br />
-                  </div>
-                </form>
-                
-              </div><!-- add post new box -->
-               
+                </div>	
             </div><!-- centerl meta -->
+            <!-- sidebar right -->
             <div class="col-lg-3">
               <aside class="sidebar static">
                 <div class="widget friend-list stick-widget">
@@ -89,7 +100,7 @@
                     </div>
                     <div class="banermeta">
                       <p>
-                        Your own ads here .
+                        Ads Here.
                       </p>
                       <span>like them all</span>
                       <a data-ripple="" title="" href="#">start now!</a>
@@ -98,9 +109,8 @@
                 </div>
               
               </aside>
-            </div><!-- sidebar --> 
+            </div><!-- sidebar -->
           </div>	
-           
         </div>
       </div>
     </div>
@@ -109,25 +119,5 @@
 
 
 {% endblock content %} 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

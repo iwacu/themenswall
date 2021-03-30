@@ -43,7 +43,10 @@ a:hover {
 }
 .left {
   height: 200px;
+  background-image:url('{{ STATIC_URL }}images/resources/animated-bg2.png');
+  
 }
+
 .left, .right {
   display: flex; 
   justify-content: center;

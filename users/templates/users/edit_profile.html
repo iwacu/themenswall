@@ -35,7 +35,10 @@
                  
                   <li>
                     <i class="ti-bell"></i>
-                    <a href="notifications.html" title="">Notifications</a>
+                    <a href="{% url 'show-notifications' %}" title="">Notifications
+                      {% if count_notifications %}
+        <span class="badge">({{ count_notifications }})</span>
+      {% endif %} </a>
                   </li>
                   <li>
                     <i class="ti-power-off"></i>

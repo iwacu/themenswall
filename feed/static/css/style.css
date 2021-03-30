@@ -641,7 +641,7 @@ header.sticky {
 .topbar {
     background: #fff;
     display: block;
-    height: 60px;
+    height: 62px;
     padding: 0 48px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
     z-index: 99;
@@ -719,7 +719,7 @@ header.sticky {
     vertical-align: inherit;
 }
 
-.form-search {
+.top-area > form {
     position: absolute;
     right: -15px;
     top: 42px;
@@ -5301,6 +5301,7 @@ canvas {
 
 .top-search {
     float: left;
+    margin-left: 54px;
     margin-top: 7px;
     text-align: left;
     width: 32%;
