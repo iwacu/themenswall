@@ -13,7 +13,7 @@ class NewPostForm(forms.ModelForm):
     }))
 	class Meta:
 		model = Post
-		fields = ['description', 'pic', 'tags']
+		fields = ['description', 'pic', 'video','tags']
 
 class NewCommentForm(forms.ModelForm):
 	comment = forms.CharField(widget=forms.Textarea)
