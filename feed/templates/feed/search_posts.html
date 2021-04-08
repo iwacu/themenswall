@@ -67,7 +67,16 @@
                       <span>published: {{ post.date_posted }}</span>
                     </div>
                     <div class="post-meta">
+                      {% if post.video %}
+                      <video width="520" height="315" controls>
+                        <source src="{{ post.video.url }}" type="video/mp4" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+                        Your browser does not support the video tag.
+                    </video>
+                    
+                            {% endif %}
+                      {% if post.pic %}
                       <img src="{{ post.pic.url }}" alt="">
+                       {% endif %}
                       <div class="we-video-info">
                         <ul>
                           <li>

@@ -50,8 +50,15 @@
             </div><!-- sidebar -->
             <!-- center middle  -->
             <div class="col-lg-6">
-              
-              
+              {% for message in messages%}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Posted Successfully!</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+                 {% endfor%} 
+             
                 {% for post in posts %}
                 <div class="central-meta item">
                 <div class="user-post">
@@ -76,7 +83,10 @@
                             {% endif %}
                       
                       <!-- <iframe src="{{ post.video }}"  height="315" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> -->
+                      {% if post.pic %}
                       <img src="{{ post.pic.url }}" alt="">
+                       {% endif %}
+                      
                       <div class="we-video-info">
                         <ul>
                          

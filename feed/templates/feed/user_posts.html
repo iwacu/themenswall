@@ -69,7 +69,9 @@
                     </video>
                     
                             {% endif %}
-                      <img src="{{ post.pic.url }}" alt="">
+                            {% if post.pic %}
+                            <img src="{{ post.pic.url }}" alt="">
+                             {% endif %}
                       <div class="we-video-info">
                         <ul>
                       
