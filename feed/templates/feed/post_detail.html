@@ -84,11 +84,13 @@
                             </span>
                           </li>
                           <li>
-                            <button class="btn btn-white mr-3 like" id="{{ post.id }}">
+                            <button class="btn btn-white mr-3 like" 
+                            style="background-color: transparent;"
+                            id="{{ post.id }}">
                               {% if is_liked %}
                               <a
                                 href="{% url 'post-like' %}"
-                                style="color: red"
+                                style="color: red;font-size: x-small;"
                                 id="likebtn{{ post.id }}"
                               >
                                 Unlike | {{post.likes.count}}</a
@@ -96,7 +98,7 @@
                               {% else %}
                               <a
                                 href="{% url 'post-like' %}"
-                                style="color: green"
+                                style="color: green;font-size: x-small;"
                                 id="likebtn{{ post.id }}"
                               >
                                 Like | {{post.likes.count}}</a
@@ -154,7 +156,7 @@
                           height: auto; 
                           word-break: break-all; 
                           word-wrap: break-word; 
-                          white-space: normal;">{{ detail.comment }}</p>
+                          white-space: normal;">{{ detail.comment}}</p>
                         </div>
 
                      
@@ -173,10 +175,9 @@
         <div class="post-comt-box">
           <form class="form-signin" method="POST" id="post-form">
             {% csrf_token %}
-            <!-- <textarea placeholder="Post your comment"></textarea> -->
             {{ form|crispy }}
             
-            <button type="submit" style="color:blue;";>Send</button>
+            <button type="submit" style="background-color: whitesmoke;color:blue;";>Send</button>
           </form>	
         </div>
       </li>

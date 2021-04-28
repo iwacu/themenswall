@@ -52,22 +52,54 @@
         
             <!-- sidebar -->
             <div class="col-lg-6">
+              {% for message in messages%}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>{{message}}!</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% endfor%} 
               <div class="central-meta">
                 <div class="editing-info">
                   <h5 class="f-title"><i class="ti-info-alt"></i> Edit Profile</h5>
-
-                  <form class="form-signin" method="POST" enctype="multipart/form-data">
+                  <div class="new-postbox">
+										<figure>
+											<img src="{{profile.profile.image.url}}" alt="">
+										</figure>
+                  </div>
+                  <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <fieldset class="form-group">
-                      <br />
-                      {{ u_form|crispy }} {{ p_form|crispy }}
-                    </fieldset>
-                    <div class="form-group">
-                      <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Update</button><br /><br />
-                      
+                    <div class="form-group">	
+                      {{ u_form.email }}
+                      <label class="control-label" for="input">Email</label><i class="mtrl-select"></i>
                     </div>
-                  </form>
+                    <div class="form-group">	
+                      {{ u_form.username }}
+                      <label class="control-label" for="input">UserName</label><i class="mtrl-select"></i>
+                    </div>
+                    <div class="form-group">	
+                      {{p_form.bio}}
+                      <label class="control-label" for="textarea">Bio</label><i class="mtrl-select"></i>
+                    </div>
+                    <div class="form-group">	
+                    <div style="position:relative;">
+                      <a class='btn btn-primary' href='javascript:;'>
+                          Choose Image File
+                          <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="image" size="40"  onchange='$("#upload-file-info").html($(this).val());'>
+                      </a>
+                      &nbsp;
+                      <span class='label label-info' id="upload-file-info"></span>
+              </div>
+              </div>
+              
+                   <div class="submit-btns">
+                      <button type="submit" class="mtr-btn"><span>Update</span></button>
+                    </div>
+                    </form>
                 </div>
+           
+                
               </div>	
             </div><!-- centerl meta -->
             <div class="col-lg-3">

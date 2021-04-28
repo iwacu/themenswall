@@ -1316,7 +1316,7 @@ header.sticky {
     border: 1px solid #eee;
     display: block;
     padding: 10px;
-    text-align: right;
+    text-align: left;
     border-top: 0;
     background: #fff;
 }

@@ -23,7 +23,7 @@
              <label for="password">Password</label>
              <input id="password" name="password" 
              placeholder="Enter your Password" type="password">
-             <i class="fa fa-eye-slash"></i>
+             <i class="fa fa-eye-slash showPasswordToggle"></i>
          </div>
          <div class="input-container cta">
              <label class="checkbox-containr">
@@ -38,6 +38,9 @@
          <button class="signup-btn" type="submit">Sign In</button>
          
      </form>
+     <script src="{% static 'js/loginregister.js' %}">
+
+     </script>
      {% endblock content %}
 
 

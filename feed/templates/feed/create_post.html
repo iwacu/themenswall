@@ -51,18 +51,43 @@
             <!-- center middle  -->
             <div class="col-lg-6">
               <div class="central-meta">
-                <form class="form-signin" method="POST" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  {{ form|crispy }}
-                  <div class="form-group">
-                    <button
-                      class="btn btn-lg btn-primary btn-block text-uppercase"
-                      type="submit"
-                    >
-                      Post</button><br />
-                  </div>
-                </form>
-                
+                <div class="editing-info">
+                  <h5 class="f-title"><i class="ti-info-alt"></i> Add New Post</h5>
+                  <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">	
+                      {{form.tags}}
+                      <label class="control-label" for="input">write hashtag,(begin with#)</label><i class="mtrl-select"></i>
+                    </div>
+                    <div class="form-group">	
+                      {{form.description}}
+                      <label class="control-label" for="textarea">Post Description</label><i class="mtrl-select"></i>
+                    </div>
+                    <div class="form-group">	
+                    <div style="position:relative;">
+                      <a class='btn btn-primary' href='javascript:;'>
+                          Choose Image File
+                          <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="pic" size="40"  onchange='$("#upload-file-info").html($(this).val());'>
+                      </a>
+                      &nbsp;
+                      <span class='label label-info' id="upload-file-info"></span>
+              </div>
+              </div>
+              <div class="form-group">	
+              <div style="position:relative;">
+                <a class='btn btn-primary' href='javascript:;'>
+                    Choose Video File
+                    <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="video" size="40"  onchange='$("#upload-video-info").html($(this).val());'>
+                </a>
+                &nbsp;
+                <span class='label label-info' id="upload-video-info"></span>
+        </div>
+        </div>
+                   <div class="submit-btns">
+                      <button type="submit" class="mtr-btn"><span>Post</span></button>
+                    </div>
+                    </form>
+                </div>
               </div><!-- add post new box -->
                
             </div><!-- centerl meta -->
