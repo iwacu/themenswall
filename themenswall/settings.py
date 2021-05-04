@@ -91,7 +91,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'themenswall',
-        'USER': 'themenswall_admin',
+        'USER': 'admin',
         'PASSWORD': 'Bethefirst@123#321',
         'HOST': 'localhost',
         'PORT': '',
