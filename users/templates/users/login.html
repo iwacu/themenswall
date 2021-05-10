@@ -1,54 +1,39 @@
 {% extends "baseLR.html" %}
 {% load static %}
 {% block content %}
-     <form method="POST"> 
+<div class="sidebar">
+    <div class="logoWrappwer">
+        <img src="{% static 'images/fav.png' %}" alt="" />
+        <h3>
+          The <span>Men's Wall</span>
+        </h3> 
+    </div>
+    <Form method="POST"> 
         {% csrf_token %}
-         <section class ="copy">
-             <h2>Sign In</h2>
-             <div class="login-container">
-                 <p>Don't have an account? <a href="{% url 'register' %}">
-                     <strong>Sign Up</strong>
-                 </a></p>
-                 {% for message in messages%}
-                 <p>{{message}}</p>
-                 {% endfor%} 
-             </div>
-         </section>
-         <div class="input-container email">
-             <label for="username">Username</label>
-             <input id="username" name="username"  placeholder="Enter your Username" type="text">
-             
-         </div>
-         <div class="input-container password">
-             <label for="password">Password</label>
-             <input id="password" name="password" 
-             placeholder="Enter your Password" type="password">
-             <i class="fa fa-eye-slash showPasswordToggle"></i>
-         </div>
-         <div class="input-container cta">
-             <label class="checkbox-containr">
-                 
-                <a
-                
-                href="{% url 'password_reset' %}"
-                >Forgot Password?</a
-              >
-             </label>
-         </div>
-         <button class="signup-btn" type="submit">Sign In</button>
-         
-     </form>
-     <script src="{% static 'js/loginregister.js' %}">
-
-     </script>
-     {% endblock content %}
-
-
-
-
-
-
-
-
-
-
+        <h3>Sign In</h3>
+        <div class="inputName">
+            <input name="username" type="text" placeholder="Username" autocomplete="off" required>
+        </div>
+        
+        <div class="inputName">
+            <input name="password" type="password" placeholder="Password" autocomplete="off" required>
+        </div>
+        <button type="submit">Sign In</button>
+    </Form>
+    <div class="term">
+        <div class="terms">
+            <a href="{% url 'password_reset' %}"
+                >Forgot Password?</a>
+        </div>
+        <h4>
+          Dont't have an account? <a href="{% url 'register' %}">Sign Up</a>
+        </h4>
+    </div> 
+</div>
+<div class="main">
+    <h1>
+        Welcome To <br />
+        The men's wall
+      </h1>
+</div>
+{% endblock content %}
